@@ -1,0 +1,7 @@
+package com.gym.init;
+
+public class Main {
+	public static void main(String[] args) {
+		
+	}
+}
