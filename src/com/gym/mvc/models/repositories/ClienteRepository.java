@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import com.gym.mvc.models.*;
 import com.gym.mvc.models.db.ConexionDB;
+import java.sql.Date;
 
 public class ClienteRepository implements IRepository<Cliente> {
 	private Connection conn;
@@ -27,7 +28,7 @@ public class ClienteRepository implements IRepository<Cliente> {
 			ps.setString(2, c.getApellido());
 			ps.setString(3, c.getEmail());
 			ps.setString(4, c.getTelefono());
-			ps.setDate(5, new java.sql.Date(c.getFechaNac().getTime()));
+			ps.setDate(5, new Date(c.getFechaNac().getTime()));
 			ps.setString(6, c.getFotoRuta());
 			ps.executeUpdate();
 			ps.close();
@@ -86,7 +87,7 @@ public class ClienteRepository implements IRepository<Cliente> {
 			ps.setString(2, c.getApellido());
 			ps.setString(3, c.getEmail());
 			ps.setString(4, c.getTelefono());
-			ps.setDate(5, new java.sql.Date(c.getFechaNac().getTime()));
+			ps.setDate(5, new Date(c.getFechaNac().getTime()));
 			ps.setString(6, c.getFotoRuta());
 			ps.setInt(7, c.getIdCliente());
 			ps.executeUpdate();

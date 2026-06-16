@@ -7,7 +7,6 @@ public class Inscripcion {
 	private int idCliente;
 	private int idMembresia;
 	private Date fechaInicio;
-	private Date fechaFin;
 	private String estado;
 
 	public Inscripcion() {
@@ -19,7 +18,6 @@ public class Inscripcion {
 		this.idCliente = idCliente;
 		this.idMembresia = idMembresia;
 		this.fechaInicio = fechaInicio;
-		this.fechaFin = fechaFin;
 		this.estado = estado;
 	}
 
@@ -53,14 +51,6 @@ public class Inscripcion {
 
 	public void setFechaInicio(Date fechaInicio) {
 		this.fechaInicio = fechaInicio;
-	}
-
-	public Date getFechaFin() {
-		return fechaFin;
-	}
-
-	public void setFechaFin(Date fechaFin) {
-		this.fechaFin = fechaFin;
 	}
 
 	public String getEstado() {

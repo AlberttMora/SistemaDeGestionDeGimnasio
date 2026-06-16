@@ -16,7 +16,7 @@ public class AsignacionEntrenador {
 	}
 
 
-	public AsignacionEntrenador(int idAsignacion, int idEntrenador, int idCliente, Date fechaFin,Date fechaInicio,
+	public AsignacionEntrenador(int idAsignacion, int idEntrenador, int idCliente, Date fechaInicio ,Date fechaFin, 
 			String observaciones) {
 		this.idAsignacion = idAsignacion;
 		this.idEntrenador = idEntrenador;

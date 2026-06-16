@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import com.gym.mvc.models.Equipo;
 import com.gym.mvc.models.db.ConexionDB;
+import java.sql.Date;
 
 public class EquipoRepository implements IRepository<Equipo> {
 	private Connection conn;
@@ -29,7 +30,7 @@ public class EquipoRepository implements IRepository<Equipo> {
 			ps.setString(2, e.getNombre());
 			ps.setString(3, e.getEstado());
 			ps.setString(4, e.getFotoRuta());
-			ps.setDate(5, new java.sql.Date(e.getFechaAdquisicion().getTime()));
+			ps.setDate(5, new Date(e.getFechaAdquisicion().getTime()));
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e1) {
@@ -85,7 +86,7 @@ public class EquipoRepository implements IRepository<Equipo> {
 			ps.setString(2, e.getNombre());
 			ps.setString(3, e.getEstado());
 			ps.setString(4, e.getFotoRuta());
-			ps.setDate(5, new java.sql.Date(e.getFechaAdquisicion().getTime()));
+			ps.setDate(5, new Date(e.getFechaAdquisicion().getTime()));
 			ps.setInt(6, e.getIdEquipo());
 			ps.executeUpdate();
 			ps.close();

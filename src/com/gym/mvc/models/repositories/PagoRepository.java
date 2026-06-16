@@ -2,7 +2,7 @@ package com.gym.mvc.models.repositories;
 
 	
 import java.sql.Connection;
-
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +29,7 @@ public class PagoRepository implements IRepository<Pago> {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, p.getIdInscripcion());
             ps.setDouble(2, p.getMonto());
-            ps.setDate(3, new java.sql.Date(p.getFechaPago().getTime()));
+            ps.setDate(3, new Date(p.getFechaPago().getTime()));
             ps.setString(4, p.getMetodoPago());
             ps.executeUpdate();
             ps.close();
@@ -81,7 +81,7 @@ public class PagoRepository implements IRepository<Pago> {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, p.getIdInscripcion());
             ps.setDouble(2, p.getMonto());
-            ps.setDate(3, new java.sql.Date(p.getFechaPago().getTime()));
+            ps.setDate(3, new Date(p.getFechaPago().getTime()));
             ps.setString(4, p.getMetodoPago());
             ps.setInt(5, p.getIdPago());
             ps.executeUpdate();
