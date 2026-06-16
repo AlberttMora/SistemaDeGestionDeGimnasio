@@ -1,5 +1,6 @@
-package com.gym.mvc.models.repository;
-		
+package com.gym.mvc.models.repositories;
+
+	
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
@@ -8,38 +9,44 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import com.gym.mvc.models.TipoEquipo;
+import com.gym.mvc.models.*;
 import com.gym.mvc.models.db.ConexionDB;
 
-public class TipoEquipoRepository implements IRepository<TipoEquipo> {
+
+public class PagoRepository implements IRepository<Pago> {
     private Connection conn;
     
-    
-    public TipoEquipoRepository() {
-    	// TODO Auto-generated constructor stub
+    public PagoRepository() {
+		// TODO Auto-generated constructor stub
         conn = ConexionDB.getInstancia().getConexion();
     }
+    
+ // PagoRepository
     @Override
-    public void create(TipoEquipo te) {
-        String sql = "INSERT INTO tipo_equipo (nombre) VALUES (?)";
+    public void create(Pago p) {
+        String sql = "INSERT INTO pago (id_inscripcion, monto, fecha_pago, metodo_pago) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, te.getNombre());
+            ps.setInt(1, p.getIdInscripcion());
+            ps.setDouble(2, p.getMonto());
+            ps.setDate(3, new java.sql.Date(p.getFechaPago().getTime()));
+            ps.setString(4, p.getMetodoPago());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     @Override
-    public List<TipoEquipo> readAll() {
-        List<TipoEquipo> lista = new ArrayList<>();
-        String sql = "SELECT * FROM tipo_equipo";
+    public List<Pago> readAll() {
+        List<Pago> lista = new ArrayList<>();
+        String sql = "SELECT * FROM pago";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                lista.add(new TipoEquipo(rs.getInt("idTipo"), rs.getString("nombre")));
+                lista.add(new Pago(rs.getInt("id_pago"), rs.getInt("id_inscripcion"), rs.getDouble("monto"), rs.getDate("fecha_pago"), rs.getString("metodo_pago")));
             }
             ps.close();
         } catch (SQLException e) {
@@ -47,17 +54,18 @@ public class TipoEquipoRepository implements IRepository<TipoEquipo> {
         }
         return lista;
     }
+
     @Override
-    public Optional<TipoEquipo> findById(int id) {
-        String sql = "SELECT * FROM tipo_equipo WHERE idTipo = ?";
+    public Optional<Pago> findById(int id) {
+        String sql = "SELECT * FROM pago WHERE id_pago = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                TipoEquipo te = new TipoEquipo(rs.getInt("idTipo"), rs.getString("nombre"));
+                Pago p = new Pago(rs.getInt("id_pago"), rs.getInt("id_inscripcion"), rs.getDouble("monto"), rs.getDate("fecha_pago"), rs.getString("metodo_pago"));
                 ps.close();
-                return Optional.of(te);
+                return Optional.of(p);
             }
             ps.close();
         } catch (SQLException e) {
@@ -65,22 +73,27 @@ public class TipoEquipoRepository implements IRepository<TipoEquipo> {
         }
         return Optional.empty();
     }
+
     @Override
-    public void update(TipoEquipo te) {
-        String sql = "UPDATE tipo_equipo SET nombre=? WHERE idTipo=?";
+    public void update(Pago p) {
+        String sql = "UPDATE pago SET id_inscripcion=?, monto=?, fecha_pago=?, metodo_pago=? WHERE id_pago=?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, te.getNombre());
-            ps.setInt(2, te.getIdTipo());
+            ps.setInt(1, p.getIdInscripcion());
+            ps.setDouble(2, p.getMonto());
+            ps.setDate(3, new java.sql.Date(p.getFechaPago().getTime()));
+            ps.setString(4, p.getMetodoPago());
+            ps.setInt(5, p.getIdPago());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public void delete(int id) {
-        String sql = "DELETE FROM tipo_equipo WHERE idTipo = ?";
+        String sql = "DELETE FROM pago WHERE id_pago = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
@@ -90,4 +103,5 @@ public class TipoEquipoRepository implements IRepository<TipoEquipo> {
             e.printStackTrace();
         }
     }
+
 }

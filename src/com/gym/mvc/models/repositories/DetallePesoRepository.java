@@ -1,6 +1,5 @@
-package com.gym.mvc.models.repository;
+package com.gym.mvc.models.repositories;
 
-	
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
@@ -9,42 +8,43 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import com.gym.mvc.models.*;
+import com.gym.mvc.models.DetallePeso;
 import com.gym.mvc.models.db.ConexionDB;
 
 
-public class PagoRepository implements IRepository<Pago> {
+public class DetallePesoRepository implements IRepository<DetallePeso> {
     private Connection conn;
     
-    public PagoRepository() {
-		// TODO Auto-generated constructor stub
+    
+    public DetallePesoRepository() {
         conn = ConexionDB.getInstancia().getConexion();
     }
     
     @Override
-    public void create(Pago p) {
-        String sql = "INSERT INTO pago (idInscripcion, monto, fechaPago, metodoPago) VALUES (?, ?, ?, ?)";
+    public void create(DetallePeso dp) {
+        String sql = "INSERT INTO detalle_peso (idEquipo, pesoKg) VALUES (?, ?) ON DUPLICATE KEY UPDATE pesoKg = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, p.getIdInscripcion());
-            ps.setDouble(2, p.getMonto());
-            ps.setDate(3, new java.sql.Date(p.getFechaPago().getTime()));
-            ps.setString(4, p.getMetodoPago());
+            ps.setInt(1, dp.getIdEquipo());
+            ps.setDouble(2, dp.getPesoKg());
+            ps.setDouble(3, dp.getPesoKg());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    
+    
     @Override
-    public List<Pago> readAll() {
-        List<Pago> lista = new ArrayList<>();
-        String sql = "SELECT * FROM pago";
+    public List<DetallePeso> readAll() {
+        List<DetallePeso> lista = new ArrayList<>();
+        String sql = "SELECT * FROM detalle_peso";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                lista.add(new Pago(rs.getInt("idPago"), rs.getInt("idInscripcion"), rs.getDouble("monto"), rs.getDate("fechaPago"), rs.getString("metodoPago")));
+                lista.add(new DetallePeso(rs.getInt("idEquipo"), rs.getDouble("pesoKg")));
             }
             ps.close();
         } catch (SQLException e) {
@@ -52,17 +52,18 @@ public class PagoRepository implements IRepository<Pago> {
         }
         return lista;
     }
+    
     @Override
-    public Optional<Pago> findById(int id) {
-        String sql = "SELECT * FROM pago WHERE idPago = ?";
+    public Optional<DetallePeso> findById(int idEquipo) {
+        String sql = "SELECT * FROM detalle_peso WHERE idEquipo = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, idEquipo);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                Pago p = new Pago(rs.getInt("idPago"), rs.getInt("idInscripcion"), rs.getDouble("monto"), rs.getDate("fechaPago"), rs.getString("metodoPago"));
+                DetallePeso dp = new DetallePeso(rs.getInt("idEquipo"), rs.getDouble("pesoKg"));
                 ps.close();
-                return Optional.of(p);
+                return Optional.of(dp);
             }
             ps.close();
         } catch (SQLException e) {
@@ -70,33 +71,35 @@ public class PagoRepository implements IRepository<Pago> {
         }
         return Optional.empty();
     }
+    
+    
+    
     @Override
-    public void update(Pago p) {
-        String sql = "UPDATE pago SET idInscripcion=?, monto=?, fechaPago=?, metodoPago=? WHERE idPago=?";
+    public void update(DetallePeso dp) {
+        String sql = "UPDATE detalle_peso SET pesoKg=? WHERE idEquipo=?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, p.getIdInscripcion());
-            ps.setDouble(2, p.getMonto());
-            ps.setDate(3, new java.sql.Date(p.getFechaPago().getTime()));
-            ps.setString(4, p.getMetodoPago());
-            ps.setInt(5, p.getIdPago());
+            ps.setDouble(1, dp.getPesoKg());
+            ps.setInt(2, dp.getIdEquipo());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    
+    
+    
     @Override
-    public void delete(int id) {
-        String sql = "DELETE FROM pago WHERE idPago = ?";
+    public void delete(int idEquipo) {
+        String sql = "DELETE FROM detalle_peso WHERE idEquipo = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, idEquipo);
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 }

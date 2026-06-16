@@ -10,9 +10,9 @@ public class Limpieza extends Personal {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Limpieza(int idPersonal, String nombre, String apellido, String email, String telefono, String tipoRol,
+	public Limpieza(int idPersonal, String nombre, String apellido, String email, String telefono,
 			String contrasena,String turno, String areaAsignada) {
-		super(idPersonal, nombre, apellido, email, telefono, tipoRol, contrasena);
+		super(idPersonal, nombre, apellido, email, telefono, contrasena);
 		this.turno=turno;
 		this.areaAsignada=areaAsignada;
 		// TODO Auto-generated constructor stub

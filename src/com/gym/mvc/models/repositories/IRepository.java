@@ -1,4 +1,4 @@
-package com.gym.mvc.models.repository;
+package com.gym.mvc.models.repositories;
 
 import java.util.List;
 import java.util.Optional;

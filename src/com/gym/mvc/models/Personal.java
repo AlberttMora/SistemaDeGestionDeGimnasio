@@ -1,26 +1,23 @@
 package com.gym.mvc.models;
 
-public abstract class Personal {
+public class Personal {
 	private int idPersonal;
 	private String nombre;
 	private String apellido;
 	private String email;
 	private String telefono;
-	private String tipoRol;
 	private String contrasena;
-	
+
 	public Personal() {
-		
+
 	}
-	
-	public Personal(int idPersonal, String nombre, String apellido, String email, String telefono, String tipoRol,
-			String contrasena) {
+
+	public Personal(int idPersonal, String nombre, String apellido, String email, String telefono, String contrasena) {
 		this.idPersonal = idPersonal;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.email = email;
 		this.telefono = telefono;
-		this.tipoRol = tipoRol;
 		this.contrasena = contrasena;
 	}
 
@@ -64,14 +61,6 @@ public abstract class Personal {
 		this.telefono = telefono;
 	}
 
-	public String getTipoRol() {
-		return tipoRol;
-	}
-
-	public void setTipoRol(String tipoRol) {
-		this.tipoRol = tipoRol;
-	}
-
 	public String getContrasena() {
 		return contrasena;
 	}
@@ -79,6 +68,5 @@ public abstract class Personal {
 	public void setContrasena(String contrasena) {
 		this.contrasena = contrasena;
 	}
-	
 
 }

@@ -1,6 +1,6 @@
 package com.gym.mvc.models;
 
-public class Entrenador extends Personal{
+public class Entrenador extends Personal {
 	private String especialidad;
 	private String certificacion;
 
@@ -9,11 +9,11 @@ public class Entrenador extends Personal{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Entrenador(int idPersonal, String nombre, String apellido, String email, String telefono, String tipoRol,
-			String contrasena,String especialidad,String certificacion) {
-		super(idPersonal, nombre, apellido, email, telefono, tipoRol, contrasena);
-		this.especialidad=especialidad;
-		this.certificacion=certificacion;
+	public Entrenador(int idPersonal, String nombre, String apellido, String email, String telefono, String contrasena,
+			String especialidad, String certificacion) {
+		super(idPersonal, nombre, apellido, email, telefono, contrasena);
+		this.especialidad = especialidad;
+		this.certificacion = certificacion;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -31,5 +31,5 @@ public class Entrenador extends Personal{
 
 	public void setCertificacion(String certificacion) {
 		this.certificacion = certificacion;
-	}	
+	}
 }
