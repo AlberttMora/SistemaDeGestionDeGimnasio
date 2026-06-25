@@ -1,11 +1,31 @@
-package com.gym.mvc.views;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.table.*;
-import java.awt.*;
-import java.awt.event.*;
+package com.gym.mvc.views.inscripcion;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 
 public class ListaInscripciones extends JFrame {
+
+    private static final long serialVersionUID = 1L;
 
     private static final Color FONDO_OSCURO   = new Color(18, 18, 18);
     private static final Color FONDO_PANEL    = new Color(28, 28, 28);
@@ -23,6 +43,12 @@ public class ListaInscripciones extends JFrame {
     private JTable tabla;
     private DefaultTableModel modelo;
     private JLabel lblTotal;
+    private JTextField txtBuscar;
+    private JComboBox<String> cmbEstado;
+    private JButton btnNueva;
+    private JButton btnPagar;
+    private JButton btnEditar;
+    private JButton btnElim;
 
     public ListaInscripciones() {
         initComponents();
@@ -34,10 +60,10 @@ public class ListaInscripciones extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setBackground(FONDO_OSCURO);
-        setLayout(new BorderLayout());
+        getContentPane().setLayout(new BorderLayout());
 
-        add(crearHeader(), BorderLayout.NORTH);
-        add(crearContenido(), BorderLayout.CENTER);
+        getContentPane().add(crearHeader(), BorderLayout.NORTH);
+        getContentPane().add(crearContenido(), BorderLayout.CENTER);
     }
 
     private JPanel crearHeader() {
@@ -68,8 +94,10 @@ public class ListaInscripciones extends JFrame {
             new EmptyBorder(8, 12, 8, 12)
         ));
         JLabel iconoBusq = new JLabel("🔍");
+        iconoBusq.setForeground(Color.GRAY);
         iconoBusq.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        JTextField txtBuscar = new JTextField();
+        
+        txtBuscar = new JTextField();
         txtBuscar.setBackground(FONDO_PANEL); txtBuscar.setForeground(TEXTO_BLANCO);
         txtBuscar.setCaretColor(DORADO); txtBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         txtBuscar.setBorder(BorderFactory.createEmptyBorder());
@@ -77,18 +105,19 @@ public class ListaInscripciones extends JFrame {
         panelBusq.add(iconoBusq, BorderLayout.WEST);
         panelBusq.add(txtBuscar, BorderLayout.CENTER);
 
-        JComboBox<String> cmbEstado = new JComboBox<String>(new String[]{"Todos", "activa", "vencida", "cancelada"});
-        cmbEstado.setBackground(FONDO_CAMPO); cmbEstado.setForeground(TEXTO_BLANCO);
+        String[] estados = new String[]{"Todos", "activa", "vencida", "cancelada"};
+        cmbEstado = new JComboBox<>();
+        cmbEstado.setModel(new DefaultComboBoxModel<>(estados));
+        cmbEstado.setBackground(FONDO_CAMPO); cmbEstado.setForeground(Color.BLACK);
         cmbEstado.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         cmbEstado.setPreferredSize(new Dimension(130, 38));
 
-        JButton btnNueva = new JButton("＋  Nueva Inscripción");
+        btnNueva = new JButton("＋  Nueva Inscripción");
         btnNueva.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnNueva.setBackground(DORADO); btnNueva.setForeground(Color.BLACK);
         btnNueva.setFocusPainted(false); btnNueva.setBorderPainted(false);
         btnNueva.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnNueva.setPreferredSize(new Dimension(170, 38));
-        btnNueva.addActionListener(e -> abrirFormInscripcion());
 
         JPanel rightBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         rightBar.setOpaque(false);
@@ -99,19 +128,14 @@ public class ListaInscripciones extends JFrame {
         barraTop.add(rightBar, BorderLayout.EAST);
 
         String[] columnas = {"ID Inscripción", "ID Cliente", "Cliente", "ID Membresía", "Tipo Membresía", "Fecha Inicio", "Estado"};
-        Object[][] datos = {
-            {1, 1, "Ana González",    1, "Mensual",    "01/05/2026", "activa"},
-            {2, 2, "Carlos Pérez",    2, "Trimestral", "15/03/2026", "activa"},
-            {3, 3, "María Rodríguez", 1, "Mensual",    "01/04/2026", "vencida"},
-            {4, 4, "Luis Vargas",     3, "Semestral",  "10/01/2026", "activa"},
-            {5, 5, "Sara Solís",      4, "Anual",      "20/06/2025", "cancelada"},
-        };
-
-        modelo = new DefaultTableModel(datos, columnas) {
+        
+        modelo = new DefaultTableModel(null, columnas) {
+            private static final long serialVersionUID = 1L;
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
 
         tabla = new JTable(modelo) {
+            private static final long serialVersionUID = 1L;
             @Override public Component prepareRenderer(TableCellRenderer r, int row, int col) {
                 Component c = super.prepareRenderer(r, row, col);
                 if (isRowSelected(row)) {
@@ -156,31 +180,16 @@ public class ListaInscripciones extends JFrame {
         pie.setOpaque(false);
         pie.setBorder(new EmptyBorder(10, 0, 0, 0));
 
-        lblTotal = new JLabel("Total: " + modelo.getRowCount() + " inscripciones");
+        lblTotal = new JLabel("Total: 0 inscripciones");
         lblTotal.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         lblTotal.setForeground(TEXTO_GRIS);
 
         JPanel acciones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         acciones.setOpaque(false);
 
-        JButton btnPagar  = crearBtn("💰  Registrar Pago", new Color(50, 120, 60), Color.WHITE);
-        JButton btnEditar = crearBtn("✏  Editar",          DORADO, Color.BLACK);
-        JButton btnElim   = crearBtn("🗑  Eliminar",        ROJO_SUAVE, Color.WHITE);
-
-        btnPagar.addActionListener(e -> {
-            if (tabla.getSelectedRow() < 0) { JOptionPane.showMessageDialog(this, "Seleccione una inscripción."); return; }
-            new RegistroPagos().setVisible(true);
-        });
-        btnEditar.addActionListener(e -> {
-            if (tabla.getSelectedRow() < 0) { JOptionPane.showMessageDialog(this, "Seleccione una inscripción."); return; }
-            abrirFormInscripcion();
-        });
-        btnElim.addActionListener(e -> {
-            if (tabla.getSelectedRow() < 0) { JOptionPane.showMessageDialog(this, "Seleccione una inscripción."); return; }
-            int r = JOptionPane.showConfirmDialog(this, "¿Eliminar la inscripción seleccionada?", "Confirmar", JOptionPane.YES_NO_OPTION);
-            // TODO: InscripcionRepository.delete(id)
-            if (r == JOptionPane.YES_OPTION) { modelo.removeRow(tabla.getSelectedRow()); lblTotal.setText("Total: " + modelo.getRowCount() + " inscripciones"); }
-        });
+        btnPagar  = crearBtn("💰  Registrar Pago", new Color(50, 120, 60), Color.WHITE);
+        btnEditar = crearBtn("📝  Editar",          DORADO, Color.BLACK);
+        btnElim   = crearBtn("🗑  Eliminar",        ROJO_SUAVE, Color.WHITE);
 
         acciones.add(btnPagar); acciones.add(btnEditar); acciones.add(btnElim);
         pie.add(lblTotal, BorderLayout.WEST);
@@ -193,25 +202,38 @@ public class ListaInscripciones extends JFrame {
     }
 
     private Color estadoColor(String estado) {
-        return switch (estado) {
-            case "activa"    -> VERDE;
-            case "vencida"   -> NARANJA;
-            case "cancelada" -> ROJO_SUAVE;
-            default -> TEXTO_BLANCO;
-        };
+         switch (estado) {
+            case "activa": return VERDE;
+            case "vencida": return NARANJA;
+            case "cancelada": return ROJO_SUAVE;
+            default: return TEXTO_BLANCO;
+        }
     }
 
     private JButton crearBtn(String texto, Color bg, Color fg) {
         JButton btn = new JButton(texto);
         btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btn.setBackground(bg); btn.setForeground(fg);
+        btn.setBackground(bg); btn.setForeground(Color.BLACK);
         btn.setFocusPainted(false); btn.setBorderPainted(false);
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btn.setPreferredSize(new Dimension(155, 34));
         return btn;
     }
 
-    private void abrirFormInscripcion() {
-        JOptionPane.showMessageDialog(this, "Formulario de inscripción — conectar con InscripcionRepository.", "PowerFit Gym", JOptionPane.INFORMATION_MESSAGE);
+    public JButton getBtnNueva() { return btnNueva; }
+    public JButton getBtnPagar() { return btnPagar; }
+    public JButton getBtnEditar() { return btnEditar; }
+    public JButton getBtnEliminar() { return btnElim; }
+    public JComboBox<String> getCmbEstado() { return cmbEstado; }
+    public JTextField getTxtBuscar() { return txtBuscar; }
+    public DefaultTableModel getModelo() { return modelo; }
+    public JTable getTabla() { return tabla; }
+
+    public int getFilaSeleccionada() { return tabla.getSelectedRow(); }
+    public String getTextoBusqueda() { return txtBuscar.getText().trim(); }
+    public String getEstadoSeleccionado() { return cmbEstado.getSelectedItem().toString(); }
+
+    public void actualizarTotal(int total) {
+        lblTotal.setText("Total: " + total + " inscripciones");
     }
 }
