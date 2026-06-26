@@ -221,7 +221,7 @@ public class GestionClientes extends JPanel {
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		btnEliminar.setBackground(ROJO);
-		btnEliminar.setForeground(Color.WHITE);
+		btnEliminar.setForeground(Color.BLACK);
 		btnEliminar.setFocusPainted(false);
 		btnEliminar.setBorderPainted(false);
 		btnEliminar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -230,7 +230,7 @@ public class GestionClientes extends JPanel {
 		btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		btnLimpiar.setBackground(new Color(60, 60, 60));
-		btnLimpiar.setForeground(Color.WHITE);
+		btnLimpiar.setForeground(Color.BLACK);
 		btnLimpiar.setFocusPainted(false);
 		btnLimpiar.setBorderPainted(false);
 		btnLimpiar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -239,7 +239,7 @@ public class GestionClientes extends JPanel {
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		btnGuardar.setBackground(VERDE);
-		btnGuardar.setForeground(Color.WHITE);
+		btnGuardar.setForeground(Color.BLACK);
 		btnGuardar.setFocusPainted(false);
 		btnGuardar.setBorderPainted(false);
 		btnGuardar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

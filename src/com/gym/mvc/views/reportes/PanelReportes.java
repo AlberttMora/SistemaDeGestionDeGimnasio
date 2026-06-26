@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import java.awt.Dimension;
 
 public class PanelReportes extends JPanel {
 
@@ -34,6 +35,7 @@ public class PanelReportes extends JPanel {
 	private JButton btnActualizar;
 
 	public PanelReportes() {
+		setPreferredSize(new Dimension(700, 700));
 		setLayout(new BorderLayout());
 		setBackground(FONDO_OSCURO);
 		setBorder(new EmptyBorder(20, 30, 20, 30));
