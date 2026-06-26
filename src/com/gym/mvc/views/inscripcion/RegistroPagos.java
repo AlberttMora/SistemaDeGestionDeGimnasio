@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -364,8 +365,12 @@ public class RegistroPagos extends JPanel {
 		txtNombreCliente.setText(nombre);
 	}
 
-	public void actualizarResumen(String textoHtml) {
-		lblResumen.setText(textoHtml);
+	public void actualizarResumen(String id, String cliente, String monto, String metodo, String estado) {
+	    lblResumen.setText("<html><b style='color:#D4AF37'>Resumen:</b> Inscripción: " + id 
+	                + " | Cliente: " + cliente 
+	                + " | Monto: " + monto 
+	                + " | Método: " + metodo 
+	                + " | Estado: " + estado + "</html>");
 	}
 
 	public void limpiarFormulario() {
@@ -376,5 +381,21 @@ public class RegistroPagos extends JPanel {
 		cmbMetodoPago.setSelectedIndex(0);
 		cmbEstadoInscripcion.setSelectedIndex(0);
 		lblResumen.setText("<html><b style='color:#D4AF37'>Resumen:</b> Busque una inscripcion y complete los datos del pago.</html>");
+	}
+	
+	public void mostrarMensaje(String msg) {
+	    JOptionPane.showMessageDialog(this, msg, "Información", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public void mostrarAdvertencia(String msg) {
+	    JOptionPane.showMessageDialog(this, msg, "Validación", JOptionPane.WARNING_MESSAGE);
+	}
+
+	public void mostrarError(String msg) {
+	    JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
+	public boolean confirmarAccion(String msg) {
+	    return JOptionPane.showConfirmDialog(this, msg, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 	}
 }

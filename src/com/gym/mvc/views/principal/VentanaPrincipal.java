@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -38,6 +39,7 @@ public class VentanaPrincipal extends JFrame {
     private JPanel tarjetaPersonal;
     private JPanel tarjetaInventario;
     private JPanel tarjetaOperaciones;
+    private JPanel tarjetaProgreso;
 
     private JButton btnInicio;
 
@@ -113,7 +115,7 @@ public class VentanaPrincipal extends JFrame {
         lblMenu.setForeground(TEXTO_GRIS);
         lblMenu.setBorder(new EmptyBorder(0, 0, 16, 0));
 
-        JPanel grid = new JPanel(new GridLayout(2, 3, 16, 16));
+        JPanel grid = new JPanel(new GridLayout(0, 3, 16, 16));
         grid.setOpaque(false);
 
         tarjetaClientes = new JPanel();
@@ -212,6 +214,40 @@ public class VentanaPrincipal extends JFrame {
         tarjetaRendimiento.add(descRendimiento);
         tarjetaRendimiento.add(Box.createVerticalGlue());
 
+        tarjetaProgreso = new JPanel();
+        tarjetaProgreso.setLayout(new BoxLayout(tarjetaProgreso, BoxLayout.Y_AXIS));
+        tarjetaProgreso.setBackground(FONDO_TARJETA);
+        tarjetaProgreso.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(SEPARADOR, 1),
+            new EmptyBorder(20, 16, 20, 16)
+        ));
+        tarjetaProgreso.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        JLabel iconoProgreso = new JLabel("CP", SwingConstants.CENTER);
+        iconoProgreso.setFont(new Font("Segoe UI", Font.PLAIN, 26));
+        iconoProgreso.setForeground(DORADO);
+        iconoProgreso.setAlignmentX(CENTER_ALIGNMENT);
+
+        JLabel tituloProgreso = new JLabel("Control de Progreso", SwingConstants.CENTER);
+        tituloProgreso.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        tituloProgreso.setForeground(DORADO);
+        tituloProgreso.setAlignmentX(CENTER_ALIGNMENT);
+
+        JLabel descProgreso = new JLabel("<html><div style='text-align:center'>Registro de metricas de peso</div></html>", SwingConstants.CENTER);
+        descProgreso.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        descProgreso.setForeground(TEXTO_GRIS);
+        descProgreso.setAlignmentX(CENTER_ALIGNMENT);
+
+        tarjetaProgreso.add(Box.createVerticalGlue());
+        tarjetaProgreso.add(iconoProgreso);
+        tarjetaProgreso.add(Box.createVerticalStrut(8));
+        tarjetaProgreso.add(tituloProgreso);
+        tarjetaProgreso.add(Box.createVerticalStrut(4));
+        tarjetaProgreso.add(descProgreso);
+        tarjetaProgreso.add(Box.createVerticalGlue());
+
+        grid.add(tarjetaProgreso);
+        
         tarjetaPersonal = new JPanel();
         tarjetaPersonal.setLayout(new BoxLayout(tarjetaPersonal, BoxLayout.Y_AXIS));
         tarjetaPersonal.setBackground(FONDO_TARJETA);
@@ -368,4 +404,35 @@ public class VentanaPrincipal extends JFrame {
     public void alSeleccionarOperaciones(MouseListener listener) {
         tarjetaOperaciones.addMouseListener(listener);
     }
+    
+    public void alSeleccionarProgreso(MouseListener listener) {
+        tarjetaProgreso.addMouseListener(listener);
+    }
+    
+    public void mostrarMensaje(String mensaje) { 
+    	JOptionPane.showMessageDialog(null, mensaje);
+    }
+    
+    public void ocultarTodo() {
+        setModuloVisible("CLIENTES", false);
+        setModuloVisible("PAGOS", false);
+        setModuloVisible("RENDIMIENTO", false);
+        setModuloVisible("PROGRESO", false);
+        setModuloVisible("PERSONAL", false);
+        setModuloVisible("INVENTARIO", false);
+        setModuloVisible("OPERACIONES", false);
+    }
+    
+    public void setModuloVisible(String clave, boolean visible) {
+        switch (clave.toUpperCase()) {
+            case "CLIENTES":    tarjetaClientes.setVisible(visible);    break;
+            case "PAGOS":       tarjetaPagos.setVisible(visible);       break;
+            case "RENDIMIENTO": tarjetaRendimiento.setVisible(visible); break;
+            case "PROGRESO":    tarjetaProgreso.setVisible(visible);    break;
+            case "PERSONAL":    tarjetaPersonal.setVisible(visible);    break;
+            case "INVENTARIO":  tarjetaInventario.setVisible(visible);  break;
+            case "OPERACIONES": tarjetaOperaciones.setVisible(visible); break;
+        }
+    }
+    
 }

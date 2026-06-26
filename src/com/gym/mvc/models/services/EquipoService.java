@@ -78,4 +78,5 @@ public class EquipoService implements IService<Equipo> {
 			throw new IllegalArgumentException("La fecha de adquisicion no puede ser futura");
 		}
 	}
+
 }

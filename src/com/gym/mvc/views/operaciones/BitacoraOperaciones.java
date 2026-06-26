@@ -4,6 +4,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -360,5 +361,13 @@ public class BitacoraOperaciones extends JPanel {
 
     public void alRegistrarLimpieza(ActionListener l) {
         btnRegistrarLimpieza.addActionListener(l);
+    }
+    
+    public void mostrarMensaje(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
+    }
+
+    public void mostrarError(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }

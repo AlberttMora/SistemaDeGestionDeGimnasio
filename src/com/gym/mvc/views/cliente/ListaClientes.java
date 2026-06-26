@@ -49,7 +49,6 @@ public class ListaClientes extends JPanel {
         setLayout(new BorderLayout());
         setBackground(FONDO_OSCURO);
 
-        // --- HEADER ---
         JPanel panelHeader = new JPanel(new GridLayout(2, 1, 0, 4));
         panelHeader.setBackground(FONDO_PANEL);
         panelHeader.setBorder(new EmptyBorder(20, 32, 16, 32));
@@ -66,12 +65,10 @@ public class ListaClientes extends JPanel {
         panelHeader.add(lblSubtitulo);
         add(panelHeader, BorderLayout.NORTH);
 
-        // --- CONTENIDO ---
         JPanel contenido = new JPanel(new BorderLayout());
         contenido.setBackground(FONDO_OSCURO);
         contenido.setBorder(new EmptyBorder(20, 32, 20, 32));
 
-        // --- BARRA SUPERIOR ---
         JPanel barraTop = new JPanel(new BorderLayout(10, 0));
         barraTop.setOpaque(false);
         barraTop.setBorder(new EmptyBorder(0, 0, 14, 0));
@@ -114,7 +111,6 @@ public class ListaClientes extends JPanel {
         barraTop.add(panelBusq, BorderLayout.CENTER);
         barraTop.add(rightBar, BorderLayout.EAST);
 
-        // --- TABLA ---
         String[] columnas = {"ID", "Nombre", "Apellido", "Email", "Telefono", "Fecha Nac.", "Foto"};
         modelo = new DefaultTableModel(null, columnas) {
             private static final long serialVersionUID = 1L;
@@ -197,18 +193,17 @@ public class ListaClientes extends JPanel {
         add(contenido, BorderLayout.CENTER);
     }
 
-    public void setControlador(ActionListener listener) {
-        btnNuevo.setActionCommand("NUEVO");
-        btnNuevo.addActionListener(listener);
-        btnEditar.setActionCommand("EDITAR");
-        btnEditar.addActionListener(listener);
-        btnElim.setActionCommand("ELIMINAR");
-        btnElim.addActionListener(listener);
-    }
+    public JButton getBtnNuevo() {
+		return btnNuevo;
+	}
 
-    public void setEscuchadorBusqueda(KeyListener listener) {
-        txtBuscar.addKeyListener(listener);
-    }
+	public JButton getBtnEditar() {
+		return btnEditar;
+	}
+	
+	public JButton getBtnElim() {
+		return btnElim;
+	}
 
     public DefaultTableModel getModelo() {
         return modelo;
@@ -229,4 +224,9 @@ public class ListaClientes extends JPanel {
     public void actualizarTotal() {
         lblTotal.setText("Total de clientes: " + modelo.getRowCount());
     }
+
+	public JTextField getTxtBuscar() {
+		return txtBuscar;
+	}
+      
 }

@@ -49,6 +49,9 @@ public class GestionPersonal extends JPanel {
 	private DefaultTableModel modelAdmins;
 	private DefaultTableModel modelEntrenadores;
 	private DefaultTableModel modelLimpieza;
+	private JTable tAdmin;
+	private JTable tEntr;
+	private JTable tLimp;
 
 	public GestionPersonal() {
 		setBackground(FONDO_OSCURO);
@@ -263,7 +266,7 @@ public class GestionPersonal extends JPanel {
 		panelPestanas.setForeground(DORADO);
 
 		modelAdmins = new DefaultTableModel(new String[] { "ID", "Nombre", "Email", "Telefono", "Nivel Acceso" }, 0);
-		JTable tAdmin = new JTable(modelAdmins);
+		tAdmin = new JTable(modelAdmins);
 		tAdmin.setBackground(FONDO_PANEL);
 		tAdmin.setForeground(Color.WHITE);
 		tAdmin.getTableHeader().setBackground(FONDO_OSCURO);
@@ -276,7 +279,7 @@ public class GestionPersonal extends JPanel {
 
 		modelEntrenadores = new DefaultTableModel(
 			new String[] { "ID", "Nombre", "Email", "Especialidad", "Certificacion" }, 0);
-		JTable tEntr = new JTable(modelEntrenadores);
+		tEntr = new JTable(modelEntrenadores);
 		tEntr.setBackground(FONDO_PANEL);
 		tEntr.setForeground(Color.WHITE);
 		tEntr.getTableHeader().setBackground(FONDO_OSCURO);
@@ -288,7 +291,7 @@ public class GestionPersonal extends JPanel {
 		panelPestanas.addTab("Entrenadores", new JScrollPane(tEntr));
 
 		modelLimpieza = new DefaultTableModel(new String[] { "ID", "Nombre", "Telefono", "Turno", "Area Asignada" }, 0);
-		JTable tLimp = new JTable(modelLimpieza);
+		tLimp = new JTable(modelLimpieza);
 		tLimp.setBackground(FONDO_PANEL);
 		tLimp.setForeground(Color.WHITE);
 		tLimp.getTableHeader().setBackground(FONDO_OSCURO);
@@ -330,6 +333,42 @@ public class GestionPersonal extends JPanel {
 
 	public String getRolSeleccionado() {
 		return (String) cbRol.getSelectedItem();
+	}
+
+	public int getPestanaSeleccionada() {
+		return panelPestanas.getSelectedIndex();
+	}
+
+	public JTable getTablaAdmin() {
+		return tAdmin;
+	}
+
+	public JTable getTablaEntrenador() {
+		return tEntr;
+	}
+
+	public JTable getTablaLimpieza() {
+		return tLimp;
+	}
+
+	public void poblarCampos(String nombre, String apellido, String email, String telefono) {
+		txtNombre.setText(nombre);
+		txtApellido.setText(apellido);
+		txtEmail.setText(email);
+		txtTelefono.setText(telefono);
+	}
+
+	public void limpiarFormulario() {
+		txtNombre.setText("");
+		txtApellido.setText("");
+		txtEmail.setText("");
+		txtTelefono.setText("");
+		txtPass.setText("");
+		txtNivelAcceso.setText("");
+		txtEspecialidad.setText("");
+		txtCertificacion.setText("");
+		txtTurno.setText("");
+		txtArea.setText("");
 	}
 
 	public String obtenerNombre() {

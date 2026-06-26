@@ -39,7 +39,7 @@ public class TipoEquipoRepository implements IRepository<TipoEquipo> {
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                lista.add(new TipoEquipo(rs.getInt("idTipo"), rs.getString("nombre")));
+                lista.add(new TipoEquipo(rs.getInt("id_tipo"), rs.getString("nombre")));
             }
             ps.close();
         } catch (SQLException e) {
@@ -47,15 +47,16 @@ public class TipoEquipoRepository implements IRepository<TipoEquipo> {
         }
         return lista;
     }
+    
     @Override
     public Optional<TipoEquipo> findById(int id) {
-        String sql = "SELECT * FROM tipo_equipo WHERE idTipo = ?";
+        String sql = "SELECT * FROM tipo_equipo WHERE id_tipo = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                TipoEquipo te = new TipoEquipo(rs.getInt("idTipo"), rs.getString("nombre"));
+                TipoEquipo te = new TipoEquipo(rs.getInt("id_tipo"), rs.getString("nombre"));
                 ps.close();
                 return Optional.of(te);
             }
@@ -67,7 +68,7 @@ public class TipoEquipoRepository implements IRepository<TipoEquipo> {
     }
     @Override
     public void update(TipoEquipo te) {
-        String sql = "UPDATE tipo_equipo SET nombre=? WHERE idTipo=?";
+        String sql = "UPDATE tipo_equipo SET nombre=? WHERE id_tipo=?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, te.getNombre());
@@ -80,7 +81,7 @@ public class TipoEquipoRepository implements IRepository<TipoEquipo> {
     }
     @Override
     public void delete(int id) {
-        String sql = "DELETE FROM tipo_equipo WHERE idTipo = ?";
+        String sql = "DELETE FROM tipo_equipo WHERE id_tipo = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);

@@ -372,20 +372,6 @@ public class ListaAsignaciones extends JPanel {
                 limpiarForm();
             }
         });
-
-        btnGuardar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                guardarAsignacion();
-            }
-        });
-
-        btnElim.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ejecutarEliminacion();
-            }
-        });
     }
 
     private void limpiarForm() {
@@ -396,24 +382,60 @@ public class ListaAsignaciones extends JPanel {
         txtObservaciones.setText("");
     }
 
-    private void guardarAsignacion() {
-        if (txtIdEntrenador.getText().trim().isEmpty() || txtIdCliente.getText().trim().isEmpty() || txtFechaInicio.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Complete los campos obligatorios (*).", "Campo requerido", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        JOptionPane.showMessageDialog(this, "Asignacion guardada correctamente.", "PowerFit Gym", JOptionPane.INFORMATION_MESSAGE);
+    public void alAsignar(ActionListener l) {
+        btnGuardar.addActionListener(l);
+    }
+
+    public void alEliminar(ActionListener l) {
+        btnElim.addActionListener(l);
+    }
+
+    public JTable getTabla() {
+        return tabla;
+    }
+
+    public DefaultTableModel getModelo() {
+        return modelo;
+    }
+
+    public String getIdEntrenador() {
+        return txtIdEntrenador.getText().trim();
+    }
+
+    public String getIdCliente() {
+        return txtIdCliente.getText().trim();
+    }
+
+    public String getFechaInicio() {
+        return txtFechaInicio.getText().trim();
+    }
+
+    public String getFechaFin() {
+        return txtFechaFin.getText().trim();
+    }
+
+    public String getObservaciones() {
+        return txtObservaciones.getText().trim();
+    }
+
+    public void limpiarFormulario() {
         limpiarForm();
     }
 
-    private void ejecutarEliminacion() {
-        if (tabla.getSelectedRow() < 0) { 
-            JOptionPane.showMessageDialog(this, "Seleccione una asignacion."); 
-            return; 
-        }
-        int r = JOptionPane.showConfirmDialog(this, "Decea eliminar la asignacion seleccionada?", "Confirmar", JOptionPane.YES_NO_OPTION);
-        if (r == JOptionPane.YES_OPTION) { 
-            modelo.removeRow(tabla.getSelectedRow()); 
-            lblTotal.setText("Total: " + modelo.getRowCount() + " asignaciones"); 
-        }
+    public void actualizarTotal() {
+        lblTotal.setText("Total: " + modelo.getRowCount() + " asignaciones");
+    }
+
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
+
+    public void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public boolean confirmarAccion(String mensaje) {
+        int r = JOptionPane.showConfirmDialog(this, mensaje, "Confirmar", JOptionPane.YES_NO_OPTION);
+        return r == JOptionPane.YES_OPTION;
     }
 }

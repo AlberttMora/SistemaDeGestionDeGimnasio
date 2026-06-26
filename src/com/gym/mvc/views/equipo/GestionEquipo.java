@@ -4,6 +4,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -35,7 +36,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import javax.swing.JComboBox;
 public class GestionEquipo extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -58,6 +59,7 @@ public class GestionEquipo extends JPanel {
 	private JButton btnLimpiar;
 	private JTable tablaEquipos;
 	private DefaultTableModel modeloTabla;
+	private JComboBox<String> comboTipo;
 
 	public GestionEquipo() {
 		setBackground(FONDO_OSCURO);
@@ -164,6 +166,25 @@ public class GestionEquipo extends JPanel {
 		gbcTxtEstado.gridx = 0;
 		gbcTxtEstado.gridy = 5;
 		panelForm.add(txtEstado, gbcTxtEstado);
+		
+		JLabel lblTipo = new JLabel("Tipo de Equipo:");
+		lblTipo.setFont(new Font("Segoe UI", Font.BOLD, 11));
+		lblTipo.setForeground(TEXTO_GRIS);
+		GridBagConstraints gbcLblTipo = new GridBagConstraints();
+		gbcLblTipo.fill = GridBagConstraints.HORIZONTAL;
+		gbcLblTipo.insets = new Insets(6, 0, 6, 0);
+		gbcLblTipo.gridx = 0; gbcLblTipo.gridy = 6; 
+		panelForm.add(lblTipo, gbcLblTipo);
+		
+		comboTipo = new JComboBox<>();
+		comboTipo.setBackground(FONDO_CAMPO);
+		comboTipo.setForeground(Color.WHITE);
+		comboTipo.setPreferredSize(new Dimension(0, 36));
+		GridBagConstraints gbcCombo = new GridBagConstraints();
+		gbcCombo.fill = GridBagConstraints.HORIZONTAL;
+		gbcCombo.insets = new Insets(6, 0, 6, 0);
+		gbcCombo.gridx = 0; gbcCombo.gridy = 7; 
+		panelForm.add(comboTipo, gbcCombo);
 
 		JLabel lblArrastrar = new JLabel("Arrastra la imagen del equipo aqui:");
 		lblArrastrar.setFont(new Font("Segoe UI", Font.BOLD, 11));
@@ -174,7 +195,7 @@ public class GestionEquipo extends JPanel {
 		gbcLblArrastrar.insets = new Insets(6, 0, 6, 0);
 		gbcLblArrastrar.weightx = 1.0;
 		gbcLblArrastrar.gridx = 0;
-		gbcLblArrastrar.gridy = 6;
+		gbcLblArrastrar.gridy = 8;
 		panelForm.add(lblArrastrar, gbcLblArrastrar);
 
 		lblVistaPreviaImagen = new JLabel("Arrastra archivo de imagen aqui (.png, .jpg)", SwingConstants.CENTER);
@@ -207,7 +228,7 @@ public class GestionEquipo extends JPanel {
 		gbcVistaPrevia.weightx = 1.0;
 		gbcVistaPrevia.weighty = 1.0;
 		gbcVistaPrevia.gridx = 0;
-		gbcVistaPrevia.gridy = 7;
+		gbcVistaPrevia.gridy = 9;
 		gbcVistaPrevia.fill = GridBagConstraints.BOTH;
 		panelForm.add(lblVistaPreviaImagen, gbcVistaPrevia);
 
@@ -239,7 +260,7 @@ public class GestionEquipo extends JPanel {
 		gbcAcciones.insets = new Insets(15, 0, 0, 0);
 		gbcAcciones.weightx = 1.0;
 		gbcAcciones.gridx = 0;
-		gbcAcciones.gridy = 8;
+		gbcAcciones.gridy = 10;
 		panelForm.add(panelAcciones, gbcAcciones);
 
 		String[] columnas = { "ID", "Nombre Equipo", "Estado Disponibilidad" };
@@ -337,12 +358,13 @@ public class GestionEquipo extends JPanel {
 	}
 
 	public Map<String, Object> getDatosFormulario() {
-		Map<String, Object> datos = new HashMap<String, Object>();
-		datos.put("id", txtIdEquipo.getText().trim());
-		datos.put("nombre", txtNombre.getText().trim());
-		datos.put("estado", txtEstado.getText().trim());
-		datos.put("archivoImagen", archivoImagenSeleccionado);
-		return datos;
+	    Map<String, Object> datos = new HashMap<String, Object>();
+	    datos.put("id", txtIdEquipo.getText().trim());
+	    datos.put("nombre", txtNombre.getText().trim());
+	    datos.put("estado", txtEstado.getText().trim());
+	    datos.put("tipo", comboTipo.getSelectedItem()); 
+	    datos.put("archivoImagen", archivoImagenSeleccionado);
+	    return datos;
 	}
 
 	public void setControlador(ActionListener l, MouseListener m) {
@@ -363,6 +385,10 @@ public class GestionEquipo extends JPanel {
 		return tablaEquipos;
 	}
 
+	public JComboBox<String> getComboTipo() {
+	    return comboTipo;
+	}
+	
 	public void mostrarImagenEnVistaPrevia(byte[] bytesImagen) {
 		if (bytesImagen != null && bytesImagen.length > 0) {
 			ImageIcon icono = new ImageIcon(bytesImagen);
@@ -382,8 +408,22 @@ public class GestionEquipo extends JPanel {
 		txtIdEquipo.setText("");
 		txtNombre.setText("");
 		txtEstado.setText("");
+		comboTipo.setSelectedIndex(-1);
 		archivoImagenSeleccionado = null;
 		lblVistaPreviaImagen.setIcon(null);
 		lblVistaPreviaImagen.setText("Arrastra archivo de imagen aqui (.png, .jpg)");
+	}
+	
+
+	public void mostrarError(String msg) {
+		JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
+	public void mostrarAdvertencia(String msg) {
+		JOptionPane.showMessageDialog(this, msg, "Validación", JOptionPane.WARNING_MESSAGE);
+	}
+
+	public void mostrarMensaje(String msg) {
+		JOptionPane.showMessageDialog(this, msg, "Información", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

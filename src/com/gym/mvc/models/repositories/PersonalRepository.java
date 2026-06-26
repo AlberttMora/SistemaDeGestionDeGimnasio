@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.gym.mvc.models.Administrador;
@@ -27,8 +29,7 @@ public class PersonalRepository {
 				+ "  WHEN l.id_personal IS NOT NULL THEN 'LIMPIEZA' ELSE 'SIN ROL' END AS tipo_rol "
 				+ "FROM personal p LEFT JOIN administrador a ON a.id_personal = p.id_personal "
 				+ "LEFT JOIN entrenador e ON e.id_personal = p.id_personal "
-				+ "LEFT JOIN limpieza ssl ON l.id_personal = p.id_personal WHERE p.email = ? "
-				+ "AND p.contrasena = ?";
+				+ "LEFT JOIN limpieza l ON l.id_personal = p.id_personal WHERE p.email = ? " + "AND p.contrasena = ?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, email);
@@ -67,5 +68,28 @@ public class PersonalRepository {
 			ex.printStackTrace();
 		}
 		return Optional.empty();
+	}
+
+	public List<Personal> readAll() {
+		List<Personal> lista = new ArrayList<>();
+
+		String sql = "SELECT id_personal, nombre, apellido, email, telefono, contrasena "
+				+ "FROM personal ORDER BY nombre";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Personal p = new Personal(rs.getInt("id_personal"), rs.getString("nombre"), rs.getString("apellido"),
+						rs.getString("email"), rs.getString("telefono"), rs.getString("contrasena"));
+				lista.add(p);
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return lista;
 	}
 }

@@ -4,7 +4,6 @@ import com.gym.mvc.controllers.base.IController;
 import com.gym.mvc.models.Membresia;
 import com.gym.mvc.models.services.IService;
 import com.gym.mvc.views.inscripcion.GestionMembresias;
-import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -61,7 +60,7 @@ public class MembresiaController implements IController {
             List<Membresia> lista = service.getAll();
             renderizarTabla(lista);
         } catch (Exception ex) {
-            mostrarError("Error al cargar membresías: " + ex.getMessage());
+        	vista.mostrarError("Error al cargar membresías: " + ex.getMessage());
         }
     }
 
@@ -92,20 +91,20 @@ public class MembresiaController implements IController {
             if (!idStr.isEmpty()) {
                 membresia.setIdMembresia(Integer.parseInt(idStr));
                 service.update(membresia);
-                mostrarMensaje("Membresía actualizada correctamente.");
+                vista.mostrarMensaje("Membresía actualizada correctamente.");
             } else {
                 service.store(membresia);
-                mostrarMensaje("Membresía registrada correctamente.");
+                vista.mostrarMensaje("Membresía registrada correctamente.");
             }
 
             vista.limpiarFormulario();
             cargarDatosIniciales();
         } catch (NumberFormatException ex) {
-            mostrarAdvertencia("Precio y Duración deben ser valores numéricos válidos.");
+        	vista.mostrarAdvertencia("Precio y Duración deben ser valores numéricos válidos.");
         } catch (IllegalArgumentException ex) {
-            mostrarAdvertencia(ex.getMessage());
+        	vista.mostrarAdvertencia(ex.getMessage());
         } catch (Exception ex) {
-            mostrarError("Error al procesar membresía: " + ex.getMessage());
+        	vista.mostrarError("Error al procesar membresía: " + ex.getMessage());
         }
     }
 
@@ -129,22 +128,22 @@ public class MembresiaController implements IController {
     public void destroy() {
         int fila = vista.getTabla().getSelectedRow();
         if (fila == -1) {
-            mostrarAdvertencia("Seleccione una membresía de la tabla para eliminar.");
+        	vista.mostrarAdvertencia("Seleccione una membresía de la tabla para eliminar.");
             return;
         }
 
         try {
             int id = (int) vista.getTabla().getValueAt(fila, 0);
-            if (confirmarAccion("¿Está seguro de eliminar este plan de membresía?")) {
+            if (vista.confirmarAccion("¿Está seguro de eliminar este plan de membresía?")) {
                 service.destroy(id);
-                mostrarMensaje("Membresía eliminada correctamente.");
+                vista.mostrarMensaje("Membresía eliminada correctamente.");
                 vista.limpiarFormulario();
                 cargarDatosIniciales();
             }
         } catch (IllegalArgumentException ex) {
-            mostrarAdvertencia(ex.getMessage());
+        	vista.mostrarAdvertencia(ex.getMessage());
         } catch (Exception ex) {
-            mostrarError("Error al eliminar membresía: " + ex.getMessage());
+            vista.mostrarError("Error al eliminar membresía: " + ex.getMessage());
         }
     }
 
@@ -172,19 +171,4 @@ public class MembresiaController implements IController {
         vista.cargarDatosPlan(id, tipo, precio, duracion);
     }
 
-    private void mostrarMensaje(String msg) {
-        JOptionPane.showMessageDialog(vista, msg, "Información", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    private void mostrarAdvertencia(String msg) {
-        JOptionPane.showMessageDialog(vista, msg, "Validación", JOptionPane.WARNING_MESSAGE);
-    }
-
-    private void mostrarError(String msg) {
-        JOptionPane.showMessageDialog(vista, msg, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    private boolean confirmarAccion(String msg) {
-        return JOptionPane.showConfirmDialog(vista, msg, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-    }
 }

@@ -3,6 +3,7 @@ package com.gym.mvc.views.inscripcion;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -253,4 +254,20 @@ public class GestionMembresias extends JPanel {
 	public void alLimpiar(ActionListener l) {
 		btnLimpiar.addActionListener(l);
 	}
+
+    public void mostrarMensaje(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Información", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void mostrarAdvertencia(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Validación", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public void mostrarError(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public boolean confirmarAccion(String msg) {
+        return JOptionPane.showConfirmDialog(this, msg, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    }
 }
