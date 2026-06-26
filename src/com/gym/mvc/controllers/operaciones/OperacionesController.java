@@ -32,7 +32,9 @@ public class OperacionesController {
 		this.limpiezaService = new LimpiezaService();
 		this.equipoService = new EquipoService();
 		this.personalService = new PersonalService();
-
+	}
+	
+	public void init() { 
 		setupListeners();
 		llenarCombos();
 		cargarDatos();

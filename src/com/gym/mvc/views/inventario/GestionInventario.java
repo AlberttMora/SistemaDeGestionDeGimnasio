@@ -5,25 +5,31 @@ import com.toedter.calendar.JTextFieldDateEditor;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
+import java.io.File;
 import java.util.Date;
 
 public class GestionInventario extends JPanel {
@@ -45,6 +51,7 @@ public class GestionInventario extends JPanel {
 	private JButton btnGuardar;
 	private JButton btnEliminar;
 	private JButton btnExaminarFoto;
+	private JLabel lblPreviewFoto;
 	private JButton btnGestionarTipos;
 	private JTable tablaEquipos;
 	private DefaultTableModel modeloTabla;
@@ -109,7 +116,7 @@ public class GestionInventario extends JPanel {
 		lblEstado.setForeground(TEXTO_GRIS);
 		panelForm.add(lblEstado);
 
-		String[] estados = new String[]{"DISPONIBLE", "EN MANTENIMIENTO", "FUERA SERVICIO"};
+		String[] estados = new String[] { "Excelente", "Mantenimiento Preventivo", "Fuera de Servicio" };
 		cbEstado = new JComboBox<>();
 		cbEstado.setModel(new DefaultComboBoxModel<>(estados));
 		cbEstado.setBackground(FONDO_OSCURO);
@@ -161,10 +168,28 @@ public class GestionInventario extends JPanel {
 		GridBagConstraints gbcForm = new GridBagConstraints();
 		gbcForm.gridx = 0;
 		gbcForm.gridy = 0;
-		gbcForm.weightx = 0.38;
+		gbcForm.weightx = 0.30;
 		gbcForm.weighty = 0.8;
 		gbcForm.fill = GridBagConstraints.BOTH;
 		cuerpo.add(panelForm, gbcForm);
+
+		JPanel panelPreview = new JPanel(new BorderLayout());
+		panelPreview.setOpaque(false);
+		panelPreview.setBorder(BorderFactory.createLineBorder(SEPARADOR));
+
+		lblPreviewFoto = new JLabel("Sin imagen", SwingConstants.CENTER);
+		lblPreviewFoto.setForeground(TEXTO_GRIS);
+		lblPreviewFoto.setPreferredSize(new Dimension(150, 150));
+		panelPreview.add(lblPreviewFoto, BorderLayout.CENTER);
+
+		GridBagConstraints gbcPreview = new GridBagConstraints();
+		gbcPreview.gridx = 1;
+		gbcPreview.gridy = 0;
+		gbcPreview.weightx = 0.12;
+		gbcPreview.weighty = 0.8;
+		gbcPreview.fill = GridBagConstraints.BOTH;
+		gbcPreview.insets = new Insets(0, 20, 0, 20);
+		cuerpo.add(panelPreview, gbcPreview);
 
 		String[] columnas = { "ID", "Categoria", "Nombre", "Estado", "Adquisicion" };
 		modeloTabla = new DefaultTableModel(columnas, 0) {
@@ -194,12 +219,12 @@ public class GestionInventario extends JPanel {
 		scroll.setBorder(BorderFactory.createLineBorder(SEPARADOR));
 
 		GridBagConstraints gbcScroll = new GridBagConstraints();
-		gbcScroll.gridx = 1;
+		gbcScroll.gridx = 2;
 		gbcScroll.gridy = 0;
-		gbcScroll.weightx = 0.62;
+		gbcScroll.weightx = 0.58;
 		gbcScroll.weighty = 0.8;
 		gbcScroll.fill = GridBagConstraints.BOTH;
-		gbcScroll.insets = new Insets(0, 20, 0, 0);
+		gbcScroll.insets = new Insets(0, 0, 0, 0);
 		cuerpo.add(scroll, gbcScroll);
 
 		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
@@ -238,7 +263,7 @@ public class GestionInventario extends JPanel {
 		GridBagConstraints gbcBotones = new GridBagConstraints();
 		gbcBotones.gridx = 0;
 		gbcBotones.gridy = 1;
-		gbcBotones.gridwidth = 2;
+		gbcBotones.gridwidth = 3;
 		gbcBotones.weighty = 0.2;
 		gbcBotones.fill = GridBagConstraints.HORIZONTAL;
 		gbcBotones.insets = new Insets(20, 0, 0, 0);
@@ -313,6 +338,7 @@ public class GestionInventario extends JPanel {
 
 	public void establecerFotoRuta(String ruta) {
 		txtFotoRuta.setText(ruta);
+		actualizarPreview(ruta);
 	}
 
 	public void establecerFecha(Date fecha) {
@@ -328,9 +354,30 @@ public class GestionInventario extends JPanel {
 			cbTipoEquipo.setSelectedIndex(0);
 		if (cbEstado.getItemCount() > 0)
 			cbEstado.setSelectedIndex(0);
+		actualizarPreview("");
+	}
+
+	public void actualizarPreview(String ruta) {
+		if (ruta == null || ruta.isEmpty()) {
+			lblPreviewFoto.setIcon(null);
+			lblPreviewFoto.setText("Sin imagen");
+			return;
+		}
+
+		File archivo = new File(ruta);
+		if (!archivo.exists()) {
+			lblPreviewFoto.setIcon(null);
+			lblPreviewFoto.setText("No encontrada");
+			return;
+		}
+
+		ImageIcon icono = new ImageIcon(ruta);
+		Image escalada = icono.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+		lblPreviewFoto.setText("");
+		lblPreviewFoto.setIcon(new ImageIcon(escalada));
 	}
 
 	public void mostrarMensaje(String mensaje) {
-		javax.swing.JOptionPane.showMessageDialog(this, mensaje);
+		JOptionPane.showMessageDialog(this, mensaje);
 	}
 }

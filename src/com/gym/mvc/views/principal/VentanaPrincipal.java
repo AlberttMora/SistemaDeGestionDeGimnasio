@@ -40,8 +40,10 @@ public class VentanaPrincipal extends JFrame {
     private JPanel tarjetaInventario;
     private JPanel tarjetaOperaciones;
     private JPanel tarjetaProgreso;
+    private JPanel tarjetaReportes;
 
     private JButton btnInicio;
+    private JLabel lblUsuario;
 
     public VentanaPrincipal() {
         initComponents();
@@ -87,6 +89,13 @@ public class VentanaPrincipal extends JFrame {
 
         JPanel headerRight = new JPanel();
         headerRight.setOpaque(false);
+
+        lblUsuario = new JLabel("");
+        lblUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        lblUsuario.setForeground(TEXTO_GRIS);
+        lblUsuario.setBorder(new EmptyBorder(0, 0, 0, 16));
+
+        headerRight.add(lblUsuario);
         headerRight.add(btnInicio);
 
         header.add(headerLeft, BorderLayout.WEST);
@@ -248,6 +257,40 @@ public class VentanaPrincipal extends JFrame {
         tarjetaProgreso.add(Box.createVerticalGlue());
 
         grid.add(tarjetaProgreso);
+
+        tarjetaReportes = new JPanel();
+        tarjetaReportes.setLayout(new BoxLayout(tarjetaReportes, BoxLayout.Y_AXIS));
+        tarjetaReportes.setBackground(FONDO_TARJETA);
+        tarjetaReportes.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(SEPARADOR, 1),
+            new EmptyBorder(20, 16, 20, 16)
+        ));
+        tarjetaReportes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        JLabel iconoReportes = new JLabel("RE", SwingConstants.CENTER);
+        iconoReportes.setFont(new Font("Segoe UI", Font.PLAIN, 26));
+        iconoReportes.setForeground(DORADO);
+        iconoReportes.setAlignmentX(CENTER_ALIGNMENT);
+
+        JLabel tituloReportes = new JLabel("Reportes", SwingConstants.CENTER);
+        tituloReportes.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        tituloReportes.setForeground(DORADO);
+        tituloReportes.setAlignmentX(CENTER_ALIGNMENT);
+
+        JLabel descReportes = new JLabel("<html><div style='text-align:center'>Consultas avanzadas del sistema</div></html>", SwingConstants.CENTER);
+        descReportes.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        descReportes.setForeground(TEXTO_GRIS);
+        descReportes.setAlignmentX(CENTER_ALIGNMENT);
+
+        tarjetaReportes.add(Box.createVerticalGlue());
+        tarjetaReportes.add(iconoReportes);
+        tarjetaReportes.add(Box.createVerticalStrut(8));
+        tarjetaReportes.add(tituloReportes);
+        tarjetaReportes.add(Box.createVerticalStrut(4));
+        tarjetaReportes.add(descReportes);
+        tarjetaReportes.add(Box.createVerticalGlue());
+
+        grid.add(tarjetaReportes);
         
         tarjetaPersonal = new JPanel();
         tarjetaPersonal.setLayout(new BoxLayout(tarjetaPersonal, BoxLayout.Y_AXIS));
@@ -382,6 +425,10 @@ public class VentanaPrincipal extends JFrame {
         return btnInicio;
     }
 
+    public void setNombreUsuario(String texto) {
+        lblUsuario.setText(texto);
+    }
+
     public void alSeleccionarClientes(MouseListener listener) {
         tarjetaClientes.addMouseListener(listener);
     }
@@ -409,6 +456,10 @@ public class VentanaPrincipal extends JFrame {
     public void alSeleccionarProgreso(MouseListener listener) {
         tarjetaProgreso.addMouseListener(listener);
     }
+
+    public void alSeleccionarReportes(MouseListener listener) {
+        tarjetaReportes.addMouseListener(listener);
+    }
     
     public void mostrarMensaje(String mensaje) { 
     	JOptionPane.showMessageDialog(null, mensaje);
@@ -422,6 +473,7 @@ public class VentanaPrincipal extends JFrame {
         setModuloVisible("PERSONAL", false);
         setModuloVisible("INVENTARIO", false);
         setModuloVisible("OPERACIONES", false);
+        setModuloVisible("REPORTES", false);
     }
     
     public void setModuloVisible(String clave, boolean visible) {
@@ -433,6 +485,7 @@ public class VentanaPrincipal extends JFrame {
             case "PERSONAL":    tarjetaPersonal.setVisible(visible);    break;
             case "INVENTARIO":  tarjetaInventario.setVisible(visible);  break;
             case "OPERACIONES": tarjetaOperaciones.setVisible(visible); break;
+            case "REPORTES":    tarjetaReportes.setVisible(visible);    break;
         }
     }
     
