@@ -9,9 +9,9 @@ public class ConexionDB {
     private static ConexionDB instancia;
     private Connection conexion;
 
-    private static final String URL  = "jdbc:mysql://localhost:3306/ ";
+    private static final String URL  = "jdbc:mysql://localhost:3306/gimnasio_bd";
     private static final String USER = "root";
-    private static final String PASS = " "; 
+    private static final String PASS = "D+A13092022d+a"; 
 
     private ConexionDB() { 
         try {

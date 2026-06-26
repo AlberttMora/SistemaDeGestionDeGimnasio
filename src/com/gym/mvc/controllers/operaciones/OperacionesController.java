@@ -17,116 +17,109 @@ import java.util.Map;
 
 public class OperacionesController {
 
-    private BitacoraOperaciones vista;
-    private BitacoraService bitacoraService;
-    private LimpiezaService limpiezaService;
-    private EquipoService equipoService;
-    private PersonalService personalService;
+	private BitacoraOperaciones vista;
+	private BitacoraService bitacoraService;
+	private LimpiezaService limpiezaService;
+	private EquipoService equipoService;
+	private PersonalService personalService;
 
-    private Map<String, Integer> mapaEquipos = new HashMap<>();
-    private Map<String, Integer> mapaPersonal = new HashMap<>();
+	private Map<String, Integer> mapaEquipos = new HashMap<>();
+	private Map<String, Integer> mapaPersonal = new HashMap<>();
 
-    public OperacionesController(BitacoraOperaciones vista) {
-        this.vista = vista;
-        this.bitacoraService = new BitacoraService();
-        this.limpiezaService = new LimpiezaService();
-        this.equipoService = new EquipoService();
-        this.personalService = new PersonalService();
-        
-        setupListeners();
-        llenarCombos();
-        cargarDatos();
-    }
+	public OperacionesController(BitacoraOperaciones vista) {
+		this.vista = vista;
+		this.bitacoraService = new BitacoraService();
+		this.limpiezaService = new LimpiezaService();
+		this.equipoService = new EquipoService();
+		this.personalService = new PersonalService();
 
-    protected void setupListeners() {
-        vista.alGuardarMantenimiento(e -> guardarMantenimiento());
-        vista.alRegistrarLimpieza(e -> registrarLimpieza());
-    }
+		setupListeners();
+		llenarCombos();
+		cargarDatos();
+	}
 
-    private void llenarCombos() {
-        vista.getComboEquipos().removeAllItems();
-        mapaEquipos.clear();
-        for (Equipo e : equipoService.getAll()) {
-            mapaEquipos.put(e.getNombre(), e.getIdEquipo());
-            vista.getComboEquipos().addItem(e.getNombre());
-        }
+	protected void setupListeners() {
+		vista.alGuardarMantenimiento(e -> guardarMantenimiento());
+		vista.alRegistrarLimpieza(e -> registrarLimpieza());
+	}
 
-        vista.getComboPersonalMnt().removeAllItems();
-        vista.getComboPersonalLimp().removeAllItems();
-        mapaPersonal.clear();
-        for (Personal p : personalService.getAll()) {
-            mapaPersonal.put(p.getNombre(), p.getIdPersonal()); // Ajustar según tu getter
-            vista.getComboPersonalMnt().addItem(p.getNombre());
-            vista.getComboPersonalLimp().addItem(p.getNombre());
-        }
-    }
+	private void llenarCombos() {
+		vista.getComboEquipos().removeAllItems();
+		mapaEquipos.clear();
+		for (Equipo e : equipoService.getAll()) {
+			mapaEquipos.put(e.getNombre(), e.getIdEquipo());
+			vista.getComboEquipos().addItem(e.getNombre());
+		}
 
-    public void cargarDatos() {
-        cargarTablaBitacora();
-        cargarTablaLimpieza();
-    }
+		vista.getComboPersonalMnt().removeAllItems();
+		vista.getComboPersonalLimp().removeAllItems();
+		mapaPersonal.clear();
+		for (Personal p : personalService.getAll()) {
+			mapaPersonal.put(p.getNombre(), p.getIdPersonal()); // Ajustar según tu getter
+			vista.getComboPersonalMnt().addItem(p.getNombre());
+			vista.getComboPersonalLimp().addItem(p.getNombre());
+		}
+	}
 
-    private void guardarMantenimiento() {
-        try {
-            BitacoraMantenimiento b = new BitacoraMantenimiento();
-            String nombreEquipo = (String) vista.getComboEquipos().getSelectedItem();
-            String nombrePersonal = (String) vista.getComboPersonalMnt().getSelectedItem();
+	public void cargarDatos() {
+		cargarTablaBitacora();
+		cargarTablaLimpieza();
+	}
 
-            if (nombreEquipo == null || nombrePersonal == null) {
-                throw new IllegalArgumentException("Debe seleccionar equipo y personal válidos.");
-            }
+	private void guardarMantenimiento() {
+		try {
+			BitacoraMantenimiento b = new BitacoraMantenimiento();
+			String nombreEquipo = (String) vista.getComboEquipos().getSelectedItem();
+			String nombrePersonal = (String) vista.getComboPersonalMnt().getSelectedItem();
 
-            b.setIdEquipo(mapaEquipos.get(nombreEquipo));
-            b.setIdPersonal(mapaPersonal.get(nombrePersonal));
-            b.setFecha(new Date());
-            b.setDescripcion(vista.getDetalleMnt());
+			if (nombreEquipo == null || nombrePersonal == null) {
+				throw new IllegalArgumentException("Debe seleccionar equipo y personal válidos.");
+			}
 
-            bitacoraService.store(b);
-            cargarTablaBitacora();
-            vista.mostrarMensaje("Mantenimiento registrado correctamente.");
-        } catch (Exception e) {
-            vista.mostrarError("Error al guardar: " + e.getMessage());
-        }
-    }
+			b.setIdEquipo(mapaEquipos.get(nombreEquipo));
+			b.setIdPersonal(mapaPersonal.get(nombrePersonal));
+			b.setFecha(new Date());
+			b.setDescripcion(vista.getDetalleMnt());
 
-    private void registrarLimpieza() {
-        try {
-            Limpieza l = new Limpieza();
-            String nombrePersonal = (String) vista.getComboPersonalLimp().getSelectedItem();
+			bitacoraService.store(b);
+			cargarTablaBitacora();
+			vista.mostrarMensaje("Mantenimiento registrado correctamente.");
+		} catch (Exception e) {
+			vista.mostrarError("Error al guardar: " + e.getMessage());
+		}
+	}
 
-            if (nombrePersonal == null) {
-                throw new IllegalArgumentException("Seleccione personal de limpieza válido.");
-            }
+	private void registrarLimpieza() {
+		try {
+			String nombrePersonal = (String) vista.getComboPersonalLimp().getSelectedItem();
+			Integer idPersonal = mapaPersonal.get(nombrePersonal);
 
-            l.setIdPersonal(mapaPersonal.get(nombrePersonal));
-            l.setAreaAsignada(vista.getAreaLimp());
-            l.setTurno(vista.getTurnoLimp());
-            
-            limpiezaService.store(l);
-            cargarTablaLimpieza();
-            vista.mostrarMensaje("Limpieza registrada correctamente.");
-        } catch (Exception e) {
-            vista.mostrarError("Error al registrar limpieza: " + e.getMessage());
-        }
-    }
+			if (idPersonal == null) {
+				throw new IllegalArgumentException("Seleccione un personal válido.");
+			}
+			limpiezaService.registrarAsignacion(idPersonal, vista.getAreaLimp(), vista.getTurnoLimp());
 
-    private void cargarTablaBitacora() {
-        DefaultTableModel model = vista.getModelMantenimientos();
-        model.setRowCount(0);
-        for (BitacoraMantenimiento b : bitacoraService.getAll()) {
-            model.addRow(new Object[] { 
-                b.getIdBitacora(), b.getIdEquipo(), b.getIdPersonal(), b.getFecha(), b.getDescripcion() 
-            });
-        }
-    }
+			cargarTablaLimpieza();
+			vista.mostrarMensaje("Higienización registrada correctamente.");
+		} catch (Exception e) {
+			vista.mostrarError("Error: " + e.getMessage());
+		}
+	}
 
-    private void cargarTablaLimpieza() {
-        DefaultTableModel model = vista.getModelLimpiezas();
-        model.setRowCount(0);
-        for (Limpieza l : limpiezaService.getAll()) {
-            model.addRow(new Object[] { 
-                l.getIdPersonal(), l.getNombre(), l.getAreaAsignada(), l.getTurno() 
-            });
-        }
-    }
+	private void cargarTablaBitacora() {
+		DefaultTableModel model = vista.getModelMantenimientos();
+		model.setRowCount(0);
+		for (BitacoraMantenimiento b : bitacoraService.getAll()) {
+			model.addRow(new Object[] { b.getIdBitacora(), b.getIdEquipo(), b.getIdPersonal(), b.getFecha(),
+					b.getDescripcion() });
+		}
+	}
+
+	private void cargarTablaLimpieza() {
+		DefaultTableModel model = vista.getModelLimpiezas();
+		model.setRowCount(0);
+		for (Limpieza l : limpiezaService.getAll()) {
+			model.addRow(new Object[] { l.getIdPersonal(), l.getNombre(), l.getAreaAsignada(), l.getTurno() });
+		}
+	}
 }

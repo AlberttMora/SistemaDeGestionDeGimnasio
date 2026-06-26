@@ -150,4 +150,16 @@ public class LimpiezaRepository implements IRepository<Limpieza> {
             ex.printStackTrace();
         }
     }
+    
+    public void asignarPersonalALimpieza(int idPersonal, String turno, String area) {
+        String sql = "INSERT INTO limpieza (id_personal, turno, area_asignada) VALUES (?, ?, ?)";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idPersonal);
+            ps.setString(2, turno);
+            ps.setString(3, area);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 }

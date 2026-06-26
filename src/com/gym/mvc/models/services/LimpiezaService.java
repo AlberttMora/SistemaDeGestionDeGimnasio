@@ -48,32 +48,24 @@ public class LimpiezaService implements IService<Limpieza> {
 	}
 
 	private void validarLimpieza(Limpieza l) {
-		if (l == null) {
-			throw new IllegalArgumentException("El empleado de limpieza no puede ser nulo");
-		}
-		if (l.getNombre() == null || l.getNombre().trim().isEmpty()) {
-			throw new IllegalArgumentException("El nombre es obligatorio");
-		}
-		if (l.getApellido() == null || l.getApellido().trim().isEmpty()) {
-			throw new IllegalArgumentException("El apellido es obligatorio");
-		}
-		if (l.getEmail() == null || l.getEmail().trim().isEmpty()) {
-			throw new IllegalArgumentException("El correo es obligatorio");
-		}
-		if (!l.getEmail().contains("@")) {
-			throw new IllegalArgumentException("Formato de correo electronico invalido");
-		}
-		if (l.getTelefono() == null || l.getTelefono().trim().isEmpty()) {
-			throw new IllegalArgumentException("El telefono es obligatorio");
-		}
-		if (l.getContrasena() == null || l.getContrasena().trim().isEmpty()) {
-			throw new IllegalArgumentException("La contrasena es obligatoria");
-		}
 		if (l.getTurno() == null || l.getTurno().trim().isEmpty()) {
-			throw new IllegalArgumentException("El turno es obligatorio");
-		}
-		if (l.getAreaAsignada() == null || l.getAreaAsignada().trim().isEmpty()) {
-			throw new IllegalArgumentException("El area asignada es obligatoria");
-		}
+	        throw new IllegalArgumentException("El turno es obligatorio");
+	    }
+	    if (l.getAreaAsignada() == null || l.getAreaAsignada().trim().isEmpty()) {
+	        throw new IllegalArgumentException("El area asignada es obligatoria");
+	    }
+	}
+	
+	public void registrarAsignacion(int idPersonal, String area, String turno) {
+	    if (idPersonal <= 0) {
+	        throw new IllegalArgumentException("ID de personal inválido");
+	    }
+	    if (area == null || area.trim().isEmpty()) {
+	        throw new IllegalArgumentException("El área es obligatoria");
+	    }
+	    if (turno == null || turno.trim().isEmpty()) {
+	        throw new IllegalArgumentException("El turno es obligatorio");
+	    }
+	    repo.asignarPersonalALimpieza(idPersonal, turno, area);
 	}
 }

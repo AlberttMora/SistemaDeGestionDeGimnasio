@@ -109,7 +109,7 @@ public class GestionInventario extends JPanel {
 		lblEstado.setForeground(TEXTO_GRIS);
 		panelForm.add(lblEstado);
 
-		String[] estados = new String[] { "Excelente", "Mantenimiento Preventivo", "Fuera de Servicio" };
+		String[] estados = new String[]{"DISPONIBLE", "EN MANTENIMIENTO", "FUERA SERVICIO"};
 		cbEstado = new JComboBox<>();
 		cbEstado.setModel(new DefaultComboBoxModel<>(estados));
 		cbEstado.setBackground(FONDO_OSCURO);

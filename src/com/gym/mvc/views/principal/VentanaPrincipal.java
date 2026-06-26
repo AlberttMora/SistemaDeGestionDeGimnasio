@@ -51,11 +51,12 @@ public class VentanaPrincipal extends JFrame {
     private void initComponents() {
         setTitle("PowerFit Gym - Sistema de Gestion");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 700);
+        setSize(1000, 1000);
         setLocationRelativeTo(null);
-        setResizable(false);
+        setResizable(true);
+        setMinimumSize(new Dimension(1000, 700));
         getContentPane().setBackground(FONDO_OSCURO);
-        setLayout(new BorderLayout());
+        getContentPane().setLayout(new BorderLayout());
 
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(FONDO_PANEL);
@@ -100,7 +101,7 @@ public class VentanaPrincipal extends JFrame {
         headerWrapper.add(header, BorderLayout.CENTER);
         headerWrapper.add(lineaDorada, BorderLayout.SOUTH);
 
-        add(headerWrapper, BorderLayout.NORTH);
+        getContentPane().add(headerWrapper, BorderLayout.NORTH);
 
         navegador = new CardLayout();
         contenedorCentral = new JPanel(navegador);
@@ -355,7 +356,7 @@ public class VentanaPrincipal extends JFrame {
         vistaMenu.add(grid, BorderLayout.CENTER);
 
         contenedorCentral.add(vistaMenu, "MENU_PRINCIPAL");
-        add(contenedorCentral, BorderLayout.CENTER);
+        getContentPane().add(contenedorCentral, BorderLayout.CENTER);
 
         JPanel footer = new JPanel(new BorderLayout());
         footer.setBackground(FONDO_PANEL);
@@ -366,7 +367,7 @@ public class VentanaPrincipal extends JFrame {
         lblFooter.setForeground(TEXTO_GRIS);
 
         footer.add(lblFooter, BorderLayout.WEST);
-        add(footer, BorderLayout.SOUTH);
+        getContentPane().add(footer, BorderLayout.SOUTH);
     }
 
     public void agregarPanelModulo(JPanel panel, String clave) {

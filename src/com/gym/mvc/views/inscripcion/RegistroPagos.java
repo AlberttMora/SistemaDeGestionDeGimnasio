@@ -305,7 +305,7 @@ public class RegistroPagos extends JPanel {
 		btnRegistrar = new JButton("Registrar Pago");
 		btnRegistrar.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		btnRegistrar.setBackground(VERDE);
-		btnRegistrar.setForeground(Color.WHITE);
+		btnRegistrar.setForeground(Color.GRAY);
 		btnRegistrar.setFocusPainted(false);
 		btnRegistrar.setBorderPainted(false);
 		btnRegistrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

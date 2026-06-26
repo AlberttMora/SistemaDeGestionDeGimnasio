@@ -88,7 +88,7 @@ public class BitacoraOperaciones extends JPanel {
 
         cbEquipo = new JComboBox();
         cbEquipo.setBackground(FONDO_OSCURO);
-        cbEquipo.setForeground(Color.WHITE);
+        cbEquipo.setForeground(Color.BLACK);
         GridBagConstraints gbcCbEquipo = new GridBagConstraints();
         gbcCbEquipo.fill = GridBagConstraints.HORIZONTAL;
         gbcCbEquipo.insets = new Insets(5, 5, 5, 5);
@@ -110,7 +110,7 @@ public class BitacoraOperaciones extends JPanel {
 
         cbPersonalMnt = new JComboBox();
         cbPersonalMnt.setBackground(FONDO_OSCURO);
-        cbPersonalMnt.setForeground(Color.WHITE);
+        cbPersonalMnt.setForeground(Color.BLACK);
         GridBagConstraints gbcCbPersonalMnt = new GridBagConstraints();
         gbcCbPersonalMnt.fill = GridBagConstraints.HORIZONTAL;
         gbcCbPersonalMnt.insets = new Insets(5, 5, 5, 5);
@@ -233,7 +233,7 @@ public class BitacoraOperaciones extends JPanel {
         sub1.add(lblConserje);
         cbPersonalLimp = new JComboBox();
         cbPersonalLimp.setBackground(FONDO_OSCURO);
-        cbPersonalLimp.setForeground(Color.WHITE);
+        cbPersonalLimp.setForeground(Color.BLACK);
         sub1.add(cbPersonalLimp);
         formLimp.add(sub1);
 
